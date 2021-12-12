@@ -76,10 +76,34 @@ SELECT SCOPE_IDENTITY();
 
         public List<Author> GetAll()
         {
-            throw new NotImplementedException();
             try
             {
+                var authors = new List<Author>();
 
+                using var connection = new SqlConnection(_connectionString);
+                connection.Open();
+                using var command = connection.CreateCommand();
+                command.CommandType = CommandType.Text;
+
+                string selectAuthorsSql = "SELECT id, first_name, last_name, birth_date FROM author";
+                command.CommandText = selectAuthorsSql;
+
+                using var dataReader = command.ExecuteReader();
+
+                while (dataReader.Read())
+                {
+                    int id = (int)dataReader["id"];
+                    string firstName = (string)dataReader["first_name"];
+                    string lastName = (string)dataReader["last_name"];
+                    DateTime birthDate = Convert.ToDateTime(dataReader["birth_date"]);
+
+                    var author = new Author(firstName, lastName, birthDate);
+                    author.Id = id;
+
+                    authors.Add(author);
+                }
+
+                return authors;
             }
             catch (SqlException e)
             {
