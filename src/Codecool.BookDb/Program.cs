@@ -21,6 +21,10 @@ namespace Codecool.BookDb
                 //authorDao.Add(author);
                 //Console.WriteLine($"Id = {author.Id}");
 
+                Author updatedAuthor = new Author("John", "Smith", DateTime.Now);
+                updatedAuthor.Id = 6;
+                authorDao.Update(updatedAuthor);
+
                 foreach (var author in authorDao.GetAll())
                 {
                     Console.WriteLine(author);

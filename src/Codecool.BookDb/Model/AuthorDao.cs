@@ -51,6 +51,21 @@ SELECT SCOPE_IDENTITY();
         {
             try
             {
+                using var connection = new SqlConnection(_connectionString);
+                connection.Open();
+                using var command = connection.CreateCommand();
+                command.CommandType = CommandType.Text;
+
+                string updateAuthorSql =
+                    @"UPDATE author SET first_name=@FirstName, last_name=@LastName, birth_date=@BirthDate
+                      WHERE id=@Id;";
+
+                command.CommandText = updateAuthorSql;
+                command.Parameters.AddWithValue("@FirstName", author.FirstName);
+                command.Parameters.AddWithValue("@LastName", author.LastName);
+                command.Parameters.AddWithValue("@BirthDate", author.BirthDate);
+                command.Parameters.AddWithValue("@Id", author.Id);
+                command.ExecuteNonQuery();
 
             }
             catch (SqlException e)
