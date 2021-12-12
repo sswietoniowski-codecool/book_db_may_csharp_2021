@@ -77,10 +77,31 @@ SELECT SCOPE_IDENTITY();
 
         public Author Get(int id)
         {
-            throw new NotImplementedException();
             try
             {
+                using var connection = new SqlConnection(_connectionString);
+                connection.Open();
+                using var command = connection.CreateCommand();
+                command.CommandType = CommandType.Text;
 
+                string selectAuthorsSql = @"SELECT id,first_name, last_name, birth_date FROM author
+WHERE id = @Id";
+                command.Parameters.AddWithValue("@Id", id);
+                command.CommandText = selectAuthorsSql;
+
+                using var dataReader = command.ExecuteReader();
+
+                Author author = null;
+
+                if (dataReader.Read())
+                {
+                    string firstName = (string)dataReader["first_name"];
+                    string lastName = (string)dataReader["last_name"];
+                    DateTime birthDate = Convert.ToDateTime(dataReader["birth_date"]);
+
+                    author = new Author(firstName, lastName, birthDate);
+                }
+                return author;
             }
             catch (SqlException e)
             {

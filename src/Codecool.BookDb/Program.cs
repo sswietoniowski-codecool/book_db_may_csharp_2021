@@ -21,14 +21,19 @@ namespace Codecool.BookDb
                 //authorDao.Add(author);
                 //Console.WriteLine($"Id = {author.Id}");
 
-                Author updatedAuthor = new Author("John", "Smith", DateTime.Now);
-                updatedAuthor.Id = 6;
-                authorDao.Update(updatedAuthor);
+                //Author updatedAuthor = new Author("John", "Smith", DateTime.Now);
+                //updatedAuthor.Id = 6;
+                //authorDao.Update(updatedAuthor);
 
-                foreach (var author in authorDao.GetAll())
-                {
-                    Console.WriteLine(author);
-                }
+                //foreach (var author in authorDao.GetAll())
+                //{
+                //    Console.WriteLine(author);
+                //}
+
+                int id = 1;
+
+                Author autor = authorDao.Get(id);
+                Console.WriteLine(autor);
             }
             catch (Exception e)
             {
